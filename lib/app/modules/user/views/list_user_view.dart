@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import '../views/user_view.dart';
+import '../views/add_user_view.dart';
 import '../controllers/user_controller.dart';
 import '../../../data/models/user_model.dart';
 
@@ -17,7 +19,6 @@ class ListUserView extends GetView<UserController> {
         body: FutureBuilder<List<User>>(
             future: controller.getAllUsers(), 
             builder: (context, snap){
-              print(snap.data!.length);
               if(snap.connectionState == ConnectionState.waiting){
                 return const Center(child: CircularProgressIndicator());
               }
@@ -34,15 +35,20 @@ class ListUserView extends GetView<UserController> {
                       title: Text(user.name!),
                       subtitle: Text(user.email!),
                       trailing: IconButton(
-                        onPressed: (){},
+                        onPressed: () => controller.deleteUser(user.id!),
                         icon: const Icon(Icons.delete),
                       ),
+                      onTap: () => Get.to(UserView(id:user.id!,))
                     );
                   },
                 );
               }
             }
-            )
+            ),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () => Get.to( AddUserView()),
+        )
             );
   }
 }
