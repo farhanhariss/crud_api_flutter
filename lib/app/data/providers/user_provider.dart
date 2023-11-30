@@ -20,7 +20,8 @@ class UserProvider extends GetConnect {
     return User.fromJsonList(response.body["data"]);
   }
 
-  Future createUser(String name, String email, int phone, String birthday, String salary) async {
+  Future createUser(String name, String email, int phone, String birthday,
+      String salary) async {
     final bodyData = {
       'name': name,
       'email': email,
@@ -28,18 +29,30 @@ class UserProvider extends GetConnect {
       'birthday': birthday,
       'salary': salary,
     };
-    final response = await post('http://10.0.2.2:3000/api/create_user', bodyData);
+    final response =
+        await post('http://10.0.2.2:3000/api/create_user', bodyData);
     await getAllUsers();
     print('Raw Response: ${response.body}');
     return response;
   }
 
   Future deleteUser(int id) async {
-  await delete('http://10.0.2.2:3000/api/delete_user/$id');
-  await getAllUsers();;
+    await delete('http://10.0.2.2:3000/api/delete_user/$id');
+    await getAllUsers();
+    ;
   }
+
+  Future updateUser(int id, String name, String email, int phone,String birthday, String salary) async {
+    final bodyData = {
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'birthday': birthday,
+      'salary': salary,
+    };
+    final response = await put('http://10.0.2.2:3000/api/update_user/$id', bodyData);
+
+    return response;
 }
 
-//TODO add create user, delete user. &update user
-
-// Future<Response<User>> postUser(User user) async => await post('user', user);
+}

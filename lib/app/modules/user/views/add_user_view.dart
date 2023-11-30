@@ -54,6 +54,11 @@ class AddUserView extends GetView<UserController> {
                     return;
                   } else {
                     await userController.createUser();
+                    userController.nameController.text = '';
+                    userController.emailController.text = '';
+                    userController.phoneController.text = '';
+                    userController.birthdayController.text = '';
+                    userController.salaryController.text = '';
                     Get.back();
                   }
                 },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:user_application/app/data/models/user_model.dart';
+import '../views/edit_user_profile_view.dart';
 
 import '../controllers/user_controller.dart';
 
@@ -45,22 +46,30 @@ class UserView extends GetView<UserController> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () async {
-                        print(user.id);
-
-                        // Check the data type using runtimeType
-                        if (user.id.runtimeType == String) {
-                          print('The user.id is a String.');
-                        } else if (user.id.runtimeType == int) {
-                          print('The user.id is an int.');
-                        } else {
-                          print('The user.id has a different data type.');
-                        }
-                        await controller.deleteUser(user.id!);
-                        Get.back();
-                      },
-                      child: Text("Delete Button"),
+                    Container(
+                      color: Colors.grey[300],
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () async {
+                              await controller.deleteUser(user.id!);
+                              Get.back();
+                            },
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.red)),
+                            child: const Text("Delete User"),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => Get.to(EditUserProfileView(id: user.id!)) ,
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.brown)),
+                            child: Text("Edit User"),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 );

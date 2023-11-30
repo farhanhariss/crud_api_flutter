@@ -64,6 +64,7 @@ class UserController extends GetxController {
         salaryController.text,
       );
       await getAllUsers();
+      update();
 
     } catch (e) {
       // Handle the error, e.g., log it or show a friendly message.
@@ -78,6 +79,31 @@ class UserController extends GetxController {
     } catch (e) {
       // Handle the error, e.g., log it or show a friendly message.
       print('Error in deleteUser: $e');
+    }
+  }
+
+  Future<void> refreshUsers() async {
+    await getAllUsers();
+    update();
+  }
+
+  updateUser(int id) async {
+    try {
+      _userProvider.updateUser(
+        id,
+        nameController.text,
+        emailController.text,
+        int.tryParse(phoneController.text) ?? 0,
+        birthdayController.text,
+        salaryController.text,
+      );
+      await getAllUsers();
+      update();
+
+    } catch (e) {
+      // Handle the error, e.g., log it or show a friendly message.
+      print('Error in updateUser: $e');
+      return Future.error(e);
     }
   }
 }
