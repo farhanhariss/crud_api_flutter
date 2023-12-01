@@ -14,9 +14,8 @@ class UserController extends GetxController {
   late TextEditingController salaryController;
 
   final RxList<User> users = <User>[].obs;
+  final Rx<User> currentUser = User().obs;
   final RxBool isLoading = true.obs;
-
-  
 
   @override
   void onInit() {
@@ -40,7 +39,9 @@ class UserController extends GetxController {
 
   Future<User?> getUserById(int id) async {
     try {
-      return await _userProvider.getUserById(id);
+      print('getUserById called with id: $id');
+      User? fetchedUser = await _userProvider.getUserById(id);
+      return currentUser.value = fetchedUser!;
     } catch (e) {
       // Handle the error, e.g., log it or show a friendly message.
       print('Error in getUserById: $e');
@@ -70,7 +71,6 @@ class UserController extends GetxController {
         salaryController.text,
       );
       await getAllUsers();
-      update();
 
     } catch (e) {
       // Handle the error, e.g., log it or show a friendly message.
@@ -103,7 +103,7 @@ class UserController extends GetxController {
         birthdayController.text,
         salaryController.text,
       );
-      await getAllUsers();
+      await getUserById(id);
       update();
 
     } catch (e) {

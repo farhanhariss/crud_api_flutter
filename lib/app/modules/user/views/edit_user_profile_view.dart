@@ -97,39 +97,7 @@ class EditUserProfileView extends GetView<UserController> {
                     ),
                   );
                 }
-              })
-
-          //       const SizedBox(
-          //         height: 10.0,
-          //       ),
-          //       TextFormField(
-          //         controller: _userEmail,
-          //         decoration: const InputDecoration(
-          //             border: OutlineInputBorder(),
-          //             labelText: 'Email',
-          //             hintText: 'Masukkan Email'),
-          //       ),
-          //       const SizedBox(
-          //         height: 10.0,
-          //       ),
-          //       TextFormField(
-          //         controller: _userPhone,
-          //         decoration: const InputDecoration(
-          //             border: OutlineInputBorder(),
-          //             labelText: 'Phone',
-          //             hintText: 'Masukkan Phone'),
-          //       ),
-          //       const SizedBox(
-          //         height: 10.0,
-          //       ),
-          //       ElevatedButton(onPressed: () async{
-          //         controller.updateUser(id);
-          //       },
-          //       child: Text('Simpan'))
-          //     ],
-          //   ),
-          // )),
-          ),
+              })),
     );
   }
 }

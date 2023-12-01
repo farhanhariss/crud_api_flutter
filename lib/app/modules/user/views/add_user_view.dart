@@ -59,6 +59,7 @@ class AddUserView extends GetView<UserController> {
                     userController.phoneController.text = '';
                     userController.birthdayController.text = '';
                     userController.salaryController.text = '';
+                    await userController.getAllUsers();
                     Get.back();
                   }
                 },
