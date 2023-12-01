@@ -13,6 +13,9 @@ class UserController extends GetxController {
   late TextEditingController birthdayController;
   late TextEditingController salaryController;
 
+  final RxList<User> users = <User>[].obs;
+  final RxBool isLoading = true.obs;
+
   
 
   @override
@@ -23,6 +26,7 @@ class UserController extends GetxController {
     birthdayController = TextEditingController();
     salaryController = TextEditingController();
     super.onInit();
+    refreshUsers();
   }
 
   @override
@@ -44,13 +48,15 @@ class UserController extends GetxController {
     }
   }
 
-  Future<List<User>> getAllUsers() async {
+  Future<void> getAllUsers() async {
     try {
-      return await _userProvider.getAllUsers();
+      final List<User> fetchedUsers = await _userProvider.getAllUsers();
+      users.assignAll(fetchedUsers);
     } catch (e) {
       // Handle the error, e.g., log it or show a friendly message.
       print('Error in getAllUsers: $e');
-      return [];
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -83,8 +89,8 @@ class UserController extends GetxController {
   }
 
   Future<void> refreshUsers() async {
+    isLoading.value = false;
     await getAllUsers();
-    update();
   }
 
   updateUser(int id) async {

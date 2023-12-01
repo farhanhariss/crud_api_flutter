@@ -17,19 +17,21 @@ class ListUserView extends GetView<UserController> {
       ),
       body: RefreshIndicator(
         onRefresh: () => controller.refreshUsers(),
-        child: FutureBuilder<List<User>>(
-          future: controller.getAllUsers(),
-          builder: (context, snap) {
-            if (snap.connectionState == ConnectionState.waiting) {
+        child: Obx(
+          () {
+            final users = controller.users;
+            
+            if (controller.isLoading.value) {
+              print(controller.isLoading.value);
               return const Center(child: CircularProgressIndicator());
             }
-            if (snap.data?.length == 0) {
+            if (users.isEmpty) {
               return Center(child: Text("No Data"));
             } else {
               return ListView.builder(
-                itemCount: snap.data!.length,
+                itemCount: users.length,
                 itemBuilder: (context, index) {
-                  User user = snap.data![index];
+                  User user = users[index];
                   return ListTile(
                     title: Text(user.name!),
                     subtitle: Text(user.email!),
@@ -54,3 +56,4 @@ class ListUserView extends GetView<UserController> {
     );
   }
 }
+
