@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:user_application/app/routes/app_pages.dart';
 
 import '../../../data/providers/user_provider.dart';
 import '../../../data/models/user_model.dart';
@@ -30,11 +32,7 @@ class UserController extends GetxController {
 
   @override
   void onClose() {
-    nameController.dispose();
-    emailController.dispose();
-    phoneController.dispose();
-    birthdayController.dispose();
-    salaryController.dispose();
+    super.onClose();
   }
 
   Future<User?> getUserById(int id) async {
@@ -70,8 +68,20 @@ class UserController extends GetxController {
         birthdayController.text,
         salaryController.text,
       );
+      Get.snackbar(
+        'Success',
+        'User created successfully',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+      nameController.text = '';
+      emailController.text = '';
+      phoneController.text = '';
+      birthdayController.text = '';
+      salaryController.text = '';
+      Get.offAllNamed(Routes.USER);
       await getAllUsers();
-
     } catch (e) {
       // Handle the error, e.g., log it or show a friendly message.
       print('Error in createUser: $e');
@@ -81,7 +91,39 @@ class UserController extends GetxController {
 
   deleteUser(int id) async {
     try {
-      await _userProvider.deleteUser(id);
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Delete Confirmation'),
+          content: const Text('Are you sure you want to delete this user?'),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                await _userProvider.deleteUser(id);
+                Get.back(); // Close the dialog
+                refreshUsers();
+                Get.snackbar(
+                  'Success',
+                  'User deleted successfully',
+                  snackPosition: SnackPosition.TOP,
+                  backgroundColor: Colors.green,
+                  colorText: Colors.white,
+                );
+              }, // Set color
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                      Colors.red)),
+              child: const Text('Yes',
+                  style: TextStyle(color: Colors.white)), // Set background color
+            ),
+            TextButton(
+              onPressed: () => Get.back(), // Close the dialog
+              child: const Text('No'),
+            ),
+          ],
+        ),
+      );
+
+      getAllUsers();
     } catch (e) {
       // Handle the error, e.g., log it or show a friendly message.
       print('Error in deleteUser: $e');
@@ -105,7 +147,6 @@ class UserController extends GetxController {
       );
       await getUserById(id);
       update();
-
     } catch (e) {
       // Handle the error, e.g., log it or show a friendly message.
       print('Error in updateUser: $e');

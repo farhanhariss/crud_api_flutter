@@ -20,7 +20,7 @@ class ListUserView extends GetView<UserController> {
         child: Obx(
           () {
             final users = controller.users;
-            
+
             if (controller.isLoading.value) {
               print(controller.isLoading.value);
               return const Center(child: CircularProgressIndicator());
@@ -51,9 +51,15 @@ class ListUserView extends GetView<UserController> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => Get.to(AddUserView()),
+        onPressed: () async {
+          controller.nameController.text = '';
+          controller.emailController.text = '';
+          controller.phoneController.text = '';
+          controller.birthdayController.text = '';
+          controller.salaryController.text = '';
+          Get.to(AddUserView());
+        },
       ),
     );
   }
 }
-

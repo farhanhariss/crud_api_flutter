@@ -54,13 +54,12 @@ class AddUserView extends GetView<UserController> {
                     return;
                   } else {
                     await userController.createUser();
+                    await userController.getAllUsers();
                     userController.nameController.text = '';
                     userController.emailController.text = '';
                     userController.phoneController.text = '';
                     userController.birthdayController.text = '';
                     userController.salaryController.text = '';
-                    await userController.getAllUsers();
-                    Get.back();
                   }
                 },
                 child: const Text('Create User'),

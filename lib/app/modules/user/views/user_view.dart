@@ -10,10 +10,9 @@ class UserView extends GetView<UserController> {
   final int id;
 
   const UserView({super.key, required this.id});
-  
+
   @override
   Widget build(BuildContext context) {
-    double deviceHeight = MediaQuery.of(context).size.height;
     double deviceWidth = MediaQuery.of(context).size.width;
     controller.getUserById(id);
     return Scaffold(
@@ -37,55 +36,60 @@ class UserView extends GetView<UserController> {
                     onPressed: () => controller.getUserById(id),
                     child: Text("Tekan")));
           } else {
-            return Column(
-              children: [
-                Container(
-                  width: deviceWidth,
-                  height: deviceHeight * 0.3,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      UserInfo(textLeft: "name", textRight: user.value.name!),
-                      UserInfo(textLeft: "email", textRight: user.value.email!),
-                      UserInfo(
-                          textLeft: "phone",
-                          textRight: user.value.phone!.toString()),
-                      UserInfo(
-                          textLeft: "birthday",
-                          textRight: user.value.birthday!),
-                      UserInfo(
-                          textLeft: "salary", textRight: user.value.salary!)
-                    ],
+            return Card(
+              shadowColor: Colors.black,
+              margin: EdgeInsetsGeometry.lerp(
+                  EdgeInsets.zero, const EdgeInsets.all(3), 10 ),
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: deviceWidth * 0.7,
+                          child: Center(
+                            child: Column(
+                              children: [
+                                UserInfo(
+                                    textLeft: "Name", textRight: user.value.name!),
+                                const SizedBox(height: 10),
+                                UserInfo(
+                                    textLeft: "Email",
+                                    textRight: user.value.email!),
+                                const SizedBox(height: 10),
+                                UserInfo(
+                                    textLeft: "Phone",
+                                    textRight: user.value.phone!.toString()),
+                                const SizedBox(height: 10),
+                                UserInfo(
+                                    textLeft: "Birthday",
+                                    textRight: user.value.birthday!),
+                                const SizedBox(height: 10),
+                                UserInfo(
+                                    textLeft: "Salary",
+                                    textRight: user.value.salary!)
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () =>
+                              Get.to(EditUserProfileView(id: user.value.id!)),
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.blue)),
+                          child: Text("Edit User"),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Container(
-                  color: Colors.grey[300],
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          await controller.deleteUser(user.value.id!);
-                          Get.back();
-                        },
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.red)),
-                        child: const Text("Delete User"),
-                      ),
-                      ElevatedButton(
-                        onPressed: () =>
-                            Get.to(EditUserProfileView(id: user.value.id!)),
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.brown)),
-                        child: Text("Edit User"),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             );
           }
         }),
@@ -103,22 +107,22 @@ class UserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           flex: 5,
           child: Text(
             textLeft,
             style: const TextStyle(
-                fontSize: 17, fontWeight: FontWeight.w600, color: Colors.grey),
+                fontSize: 18, fontWeight: FontWeight.w600, color: Colors.grey),
           ),
         ),
         Expanded(
           flex: 5,
           child: Text(
             textRight,
-            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
         ),
       ],
